@@ -1,17 +1,80 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model cards {
+  id           Int     @id @default(autoincrement())
+  name         String  @db.VarChar(255)
+  oracle_id    String  @unique @db.VarChar(255)
+  scryfall_uri String  @db.VarChar(255)
+  image_uris   Json
+  set_name     String? @db.VarChar(255)
+  set_code     String? @db.VarChar(9)
+  set_type     String? @db.VarChar(60)
+  type_line    String? @db.VarChar(255)
+  oracle_text  String? @db.VarChar(512)
+}
+
+model price_entry {
+  id         Int       @id @default(autoincrement())
+  oracle_id  String?   @db.VarChar(255)
+  price_list String?
+  date       DateTime? @db.Date
+  frequency  Int       @default(1)
+
+  @@unique([oracle_id, date])
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model sealed_prices {
+  id         Int       @default(autoincrement())
+  name       String
+  link       String?
+  image      String?
+  price      Float?
+  stock      Int?
+  website    String
+  language   String
+  tags       String[]
+  updated_at DateTime? @default(now()) @db.Timestamp(6)
+
+  @@id([name, website, language, tags]) 
+  @@ignore
+}
+
+model search {
+  id          Int     @id @default(autoincrement())
+  query       String? @db.VarChar
+  websites    String? @db.VarChar(512)
+  query_type  String? @db.VarChar(60)
+  results     String? @db.VarChar(255)
+  num_results Int?
+  timestamp   String? @db.VarChar
+}
+
+model set {
+  id             Int      @default(autoincrement())
+  name           String   @db.VarChar(255)
+  base_set_size  Int
+  total_set_size Int
+  code           String   @db.VarChar(20)
+  release_date   DateTime @db.Date
+  type           String   @db.VarChar(255)
+
+  @@id([name, base_set_size, code, release_date, type])
+}
+
+model users {
+  id              Int     @id(map: "user_pkey") @default(autoincrement())
+  username        String  @db.VarChar
+  full_name       String  @db.VarChar
+  email           String  @db.VarChar
+  hashed_password String  @db.VarChar
+  disabled        Boolean @default(false)
+  user_type       String  @default("user") @db.VarChar
 }
