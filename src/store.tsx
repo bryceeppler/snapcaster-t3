@@ -310,7 +310,8 @@ export const useStore = create<State>((set, get) => ({
         cardName: cardName,
       }
     );
-    set({ singleSearchPriceList: response.data });
+    console.log(response.data);
+    set({ singleSearchPriceList: response.data as CardPrices[] });
     set({ priceChartLoading: false });
   },
   setSealedSearchOrderBy: (sealedSearchOrderBy) => {
@@ -437,7 +438,7 @@ export const useStore = create<State>((set, get) => ({
         websites: ["all"],
       }
     );
-    const results = response.data;
+    const results = response.data as SealedSearchResult[];
     // sort results by ascending price
     // results = [SingleSearchResult, SingleSearchResult, ...]
     // SingleSearchResult = { name: string, link: string, image: string, set: string, condition: string, foil: boolean, price: number, website: string }
@@ -458,18 +459,24 @@ export const useStore = create<State>((set, get) => ({
       (c) => c.cardName === card.cardName
     );
     const cardToSort = filteredMultiSearchResults[cardIndex];
-    const sortedVariants = cardToSort.variants.sort((a, b) => {
-      if (orderBy === "price") {
-        return a.price - b.price;
-      }
-      if (orderBy === "condition") {
-        return a.condition.localeCompare(b.condition);
-      }
-      if (orderBy === "website") {
-        return a.website.localeCompare(b.website);
-      }
-      return 0;
-    });
+    if (!cardToSort) {
+      return;
+    }
+    const sortedVariants =
+      cardToSort &&
+      cardToSort.variants.sort((a, b) => {
+        if (orderBy === "price") {
+          return a.price - b.price;
+        }
+        if (orderBy === "condition") {
+          return a.condition.localeCompare(b.condition);
+        }
+        if (orderBy === "website") {
+          return a.website.localeCompare(b.website);
+        }
+        return 0;
+      });
+    // Since we did .sort, which sorts in place I think we can remove the newCard object to avoid duping memory
     const newCard: MultiSearchCardState = {
       ...cardToSort,
       variants: sortedVariants,
@@ -595,7 +602,7 @@ export const useStore = create<State>((set, get) => ({
         worstCondition: "nm",
       }
     );
-    const results = response.data;
+    const results = response.data as MultiSearchCard[];
     // sort results by ascending price
     // results.sort((a: MultiSearchCard, b: MultiSearchCard) => {
     //   return a.price - b.price;
@@ -603,23 +610,24 @@ export const useStore = create<State>((set, get) => ({
     // for card in results
     for (let i = 0; i < results.length; i++) {
       // sort card's results by ascending price
-      results[i].variants.sort(
+      results[i]?.variants.sort(
         (a: SingleSearchResult, b: SingleSearchResult) => {
           return a.price - b.price;
         }
       );
     }
     // construct filteredMultiSearchResults by adding a 'selected' property to each card, and a 'selectedVariant' property to each card
-    const filteredResults: MultiSearchCardState[] = results.map(
-      (card: MultiSearchCard) => {
-        return {
-          ...card,
-          selected: true,
-          selectedVariant: card.variants[0],
-        };
-      }
-    );
-    set({ filteredMultiSearchResults: filteredResults });
+    const filteredResults = results.map((card: MultiSearchCard) => {
+      return {
+        ...card,
+        selected: true,
+        selectedVariant: card.variants[0],
+      };
+    });
+
+    set({
+      filteredMultiSearchResults: filteredResults as MultiSearchCardState[],
+    });
     // set({ filteredMultiSearchResults: results });
     set({ multiSearchResults: results });
     set({ multiSearchResultsLoading: false });
@@ -648,7 +656,7 @@ export const useStore = create<State>((set, get) => ({
         websites: ["all"],
       }
     );
-    const results = response.data;
+    const results = response.data as SingleSearchResult[];
     // sort results by ascending price
     // results = [SingleSearchResult, SingleSearchResult, ...]
     // SingleSearchResult = { name: string, link: string, image: string, set: string, condition: string, foil: boolean, price: number, website: string }
