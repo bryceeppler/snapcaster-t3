@@ -7,7 +7,9 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "prisma:push": "npx prisma db push",
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/stripe-webhook --latest"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.16.2",
@@ -26,6 +28,7 @@
     "react-hot-toast": "^2.4.0",
     "react-merge-refs": "^2.0.1",
     "recharts": "^2.5.0",
+    "stripe": "^12.1.1",
     "superjson": "1.12.2",
     "svix": "^0.83.1",
     "zod": "^3.21.4",

@@ -9,6 +9,10 @@ const server = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]),
   NEXT_PUBLIC_SNAPCASTER_API_URL: z.string().url(),
   CLERK_WEBHOOK_SECRET: z.string(),
+  STRIPE_PUBLISHABLE_KEY: z.string(),
+  STRIPE_SECRET_KEY: z.string(),
+  STRIPE_WEBHOOK_SECRET: z.string(),
+  STRIPE_PRICE_ID: z.string(),
 });
 
 /**
@@ -30,6 +34,10 @@ const processEnv = {
   NODE_ENV: process.env.NODE_ENV,
   CLERK_WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET,
   NEXT_PUBLIC_SNAPCASTER_API_URL: process.env.NEXT_PUBLIC_SNAPCASTER_API_URL,
+  STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
+  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+  STRIPE_PRICE_ID: process.env.STRIPE_PRICE_ID,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 
