@@ -12,6 +12,30 @@ export const config = {
     bodyParser: false,
   },
 };
+type EmailAddress = {
+  email_address: string;
+  id: string;
+  object: string;
+  verification: Verification;
+};
+
+type Verification = {
+  status: string;
+  strategy: string;
+};
+type ClerkUser = {
+  created_at: number;
+  email_addresses: EmailAddress[];
+  first_name: string;
+  last_name: string;
+  last_sign_in_at: number;
+  phone_numbers: string[];
+  primary_email_address_id: string;
+  primary_phone_number_id: null | string;
+  profile_image_url: string;
+  updated_at: number;
+  username: null | string;
+};
 
 const webhookSecret: string = env.CLERK_WEBHOOK_SECRET;
 
@@ -19,7 +43,6 @@ export default async function handler(
   req: NextApiRequestWithSvixRequiredHeaders,
   res: NextApiResponse
 ) {
-  console.log("received webhook, verifying...");
   // Verify the webhook signature
   // See https://docs.svix.com/receiving/verifying-payloads/how
   const payload = (await buffer(req)).toString();
@@ -38,22 +61,30 @@ export default async function handler(
   if (eventType === "user.created" || eventType === "user.updated") {
     const { id, ...attributes } = evt.data;
     // update or create the user in the database
+
     try {
+      const clerkUser: ClerkUser = attributes as unknown as ClerkUser;
+
+      // find the primary email address
+      const primaryEmailAddress = clerkUser.email_addresses.find(
+        (emailAddress) => emailAddress.id === clerkUser.primary_email_address_id
+      );
+      const email = primaryEmailAddress?.email_address || "";
       await prisma.users.upsert({
         where: { clerkId: String(id) },
         update: {
           first_name: String(attributes.first_name),
           last_name: String(attributes.last_name),
-          email: "",
+          email: email,
+          profileImageUrl: String(attributes.profile_image_url),
         },
         create: {
           clerkId: String(id),
           first_name: String(attributes.first_name),
           last_name: String(attributes.last_name),
           username: String(attributes.username),
-          email: "",
-          // email: String(attributes.email_addresses?[0].email_address? || ""),
-          // ...attributes,
+          email: email,
+          profileImageUrl: String(attributes.profile_image_url),
         },
       });
     } catch (e) {
