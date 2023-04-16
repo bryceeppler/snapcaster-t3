@@ -14,6 +14,7 @@ import axios from "axios";
 import { type CardInfo } from "~/components/PopularCards";
 import { useEffect, useState } from "react";
 import { env } from "~/env.mjs";
+type Props = object;
 const Home: NextPage<Props> = () => {
   const {
     singleSearchResults,
@@ -33,7 +34,14 @@ const Home: NextPage<Props> = () => {
           env.NEXT_PUBLIC_SNAPCASTER_API_URL || "http://localhost:3000"
         }/utils/popular_cards/`
       )
-      .then((res) => res.data)
+      .then(
+        (res) =>
+          res.data as {
+            monthly: CardInfo[];
+            weekly: CardInfo[];
+            daily: CardInfo[];
+          }
+      )
       .then((data) => {
         let popularCards = [...data.monthly, ...data.weekly];
         // remove duplicates

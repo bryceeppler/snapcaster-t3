@@ -368,7 +368,7 @@ export const useStore = create<State>((set, get) => ({
     const selectedTags = sealedFilterTags.filter(
       (sealedFilterTag) => sealedFilterTag.selected
     );
-    if (selectedTags.length === 1 && selectedTags[0].name === tag.name) {
+    if (selectedTags.length === 1 && selectedTags[0]?.name === tag.name) {
       return;
     }
     const newSealedFilterTags = sealedFilterTags.map((sealedFilterTag) => {
