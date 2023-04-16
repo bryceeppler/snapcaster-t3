@@ -3,8 +3,9 @@ import { clerkClient } from "@clerk/nextjs/dist/api";
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { api } from "~/utils/api";
 
-const filterUserForClient = (user: User) => {
+const filterClerkUserForClient = (user: User) => {
   return {
     id: user.id,
     firstName: user.firstName,
@@ -14,17 +15,35 @@ const filterUserForClient = (user: User) => {
 };
 
 export const userRouter = createTRPCRouter({
-  getById: publicProcedure
-    .input(z.object({ userId: z.string() }))
+  getClerkUserById: publicProcedure
+    .input(z.object({ clerkId: z.string() }))
     .query(async ({ input }) => {
-      const user = await clerkClient.users.getUser(input.userId);
-      const filteredUser = filterUserForClient(user);
+      const user = await clerkClient.users.getUser(input.clerkId);
+      const filteredUser = filterClerkUserForClient(user);
       return filteredUser;
     }),
 
-  getAll: publicProcedure.query(async () => {
+  getAllClerkUsers: publicProcedure.query(async () => {
     const users = await clerkClient.users.getUserList();
-    const filteredUsers = users.map((user) => filterUserForClient(user));
+    const filteredUsers = users.map((user) => filterClerkUserForClient(user));
     return filteredUsers;
   }),
+
+  getByClerkId: publicProcedure
+    .input(z.object({ clerkId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const user = await ctx.prisma.users.findUnique({
+        where: { clerkId: input.clerkId },
+      });
+      return user;
+    }),
+
+  getAccountPage: publicProcedure
+    .input(z.object({ clerkId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const user = await ctx.prisma.users.findUnique({
+        where: { clerkId: input.clerkId },
+      });
+      return user;
+    }),
 });
