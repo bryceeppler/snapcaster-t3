@@ -1,19 +1,19 @@
-import React from 'react'
-import { SealedSearchResult, useStore } from '@/store'
+import React from "react";
+import { SealedSearchResult, useStore } from "~/store";
 
 type Props = {
-    product: SealedSearchResult
-}
+  product: SealedSearchResult;
+};
 
 export default function SealedCatalogRow({ product }: Props) {
-    const { websites } = useStore()
+  const { websites } = useStore();
   return (
-    <div className="grid grid-cols-12 gap-4 m-1 p-2 rounded-md bg-zinc-900 hover:bg-zinc-700">
+    <div className="m-1 grid grid-cols-12 gap-4 rounded-md bg-zinc-900 p-2 hover:bg-zinc-700">
       <div className="col-span-3 m-auto">
         <img
           src={product.image}
           alt={product.name}
-          className="h-20 md:h-24 rounded-md"
+          className="h-20 rounded-md md:h-24"
         />
       </div>
       <div className="col-span-5 mt-2 text-left">
@@ -22,10 +22,10 @@ export default function SealedCatalogRow({ product }: Props) {
           <div className="text-sm dark:text-gray-400 ">{product.language}</div>
           <div className="flex flex-row">
             {/* for each tag in product.tag, create a little tag card with a gradient background */}
-            {product.tags.map((tag : string) => (
+            {product.tags.map((tag: string) => (
               <div
                 key={tag}
-                className="text-xs font-bold rounded-md px-2 py-1 mt-1 mr-1 text-white"
+                className="mr-1 mt-1 rounded-md px-2 py-1 text-xs font-bold text-white"
                 style={{
                   background: `linear-gradient(90deg, red 0%, purple 100%)`,
                 }}
@@ -44,17 +44,25 @@ export default function SealedCatalogRow({ product }: Props) {
             In stock: {product.stock >= 1 ? product.stock : "✓"}
           </div>
           <img
-        //   find website with website.code === product.website
-            src={websites.find((website) => website.code.toLowerCase() === product.website.toLowerCase())?.image}
+            //   find website with website.code === product.website
+            src={
+              websites.find(
+                (website) =>
+                  website.code.toLowerCase() === product.website.toLowerCase()
+              )?.image
+            }
             alt={product.website}
-            className="mt-1 w-12 md:w-12 object-cover"
+            className="mt-1 w-12 object-cover md:w-12"
           />
 
-            <button 
-            className="transition-all bg-zinc-800 hover:bg-zinc-900 text-white font-bold p-1 px-2 sm:py-1 sm:px-4 rounded focus:outline-none focus:shadow-outline mt-4 "            onClick={() => window.open(product.link, "_blank")}>
-              Buy
-            </button>
+          <button
+            className="focus:shadow-outline mt-4 rounded bg-zinc-800 p-1 px-2 font-bold text-white transition-all hover:bg-zinc-900 focus:outline-none sm:px-4 sm:py-1 "
+            onClick={() => window.open(product.link, "_blank")}
+          >
+            Buy
+          </button>
         </div>
       </div>
-    </div>  )
+    </div>
+  );
 }
