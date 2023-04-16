@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { useUser } from "@clerk/nextjs";
+import { useUser, SignInButton, SignOutButton } from "@clerk/nextjs";
 
 export default function Navbar() {
   const currentPath = useRouter().pathname;
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const { user } = useUser();
+  const { user, isSignedIn, isLoaded } = useUser();
 
   const logoSrc = "/logo.png";
   const pages = [
@@ -119,17 +119,7 @@ ${page.current ? "bg-zinc-800 text-white hover:bg-zinc-600" : ""}
  rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-600
 `}
                   >
-                    {user ? (
-                      <span
-                        onClick={() => {
-                          console.log("signing out");
-                        }}
-                      >
-                        Sign out
-                      </span>
-                    ) : (
-                      <Link href="/signin">Sign in</Link>
-                    )}
+                    {isSignedIn ? <SignOutButton /> : <SignInButton />}
                   </div>
                 </div>
               </div>
@@ -160,13 +150,7 @@ ${page.current ? "bg-zinc-800 text-white hover:bg-zinc-600" : ""}
  rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-400
 `}
               >
-                {user ? (
-                  <span onClick={() => console.log("signing out")}>
-                    Sign out
-                  </span>
-                ) : (
-                  <Link href="/signin">Sign in</Link>
-                )}
+                {isSignedIn ? <SignOutButton /> : <SignInButton />}
               </div>
             </div>
           </div>

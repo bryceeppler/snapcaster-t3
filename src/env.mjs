@@ -8,6 +8,7 @@ const server = z.object({
   DATABASE_URL: z.string().url(),
   NODE_ENV: z.enum(["development", "test", "production"]),
   NEXT_PUBLIC_SNAPCASTER_API_URL: z.string().url(),
+  CLERK_WEBHOOK_SECRET: z.string(),
 });
 
 /**
@@ -27,6 +28,7 @@ const client = z.object({
 const processEnv = {
   DATABASE_URL: process.env.DATABASE_URL,
   NODE_ENV: process.env.NODE_ENV,
+  CLERK_WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET,
   NEXT_PUBLIC_SNAPCASTER_API_URL: process.env.NEXT_PUBLIC_SNAPCASTER_API_URL,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };

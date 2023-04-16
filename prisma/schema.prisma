@@ -69,11 +69,16 @@ model set {
 }
 
 model users {
-  id              Int     @id(map: "user_pkey") @default(autoincrement())
-  username        String  @db.VarChar
-  full_name       String  @db.VarChar
-  email           String  @db.VarChar
-  hashed_password String  @db.VarChar
-  disabled        Boolean @default(false)
-  user_type       String  @default("user") @db.VarChar
+  id              Int      @id(map: "user_pkey") @default(autoincrement())
+  username        String   @db.VarChar
+  first_name      String   @default("") @db.VarChar
+  last_name       String   @default("") @db.VarChar
+  email           String   @db.VarChar
+  // hashed_password String   @db.VarChar
+  disabled        Boolean  @default(false)
+  user_type       String   @default("user") @db.VarChar
+  clerkId         String?  @unique @db.VarChar(255)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
+  profileImageUrl String?
 }

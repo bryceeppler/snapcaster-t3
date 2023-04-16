@@ -6,7 +6,7 @@ import SingleSearchInfo from "~/components/SingleSearchInfo";
 import SearchFilters from "~/components/SingleSearchFilters";
 import { useStore } from "~/store";
 import SingleCatalog from "~/components/SingleCatalog";
-import { SignOutButton, useUser } from "@clerk/nextjs";
+import { SignOutButton, SignInButton, useUser } from "@clerk/nextjs";
 import PriceHistory from "~/components/PriceHistory";
 import Updates from "~/components/Updates";
 import PopularCards from "~/components/PopularCards";

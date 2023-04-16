@@ -1,3 +1,13 @@
+# Snapcaster
+
+# Clerk
+
+- exposing local webhooks with ngrok
+  Launch your local webhook. npm start
+  Launch ngrok. ngrok http 3000
+  Configure Clerk webhooks with your ngrok URL.
+  Secure your webhook requests with verification.
+
 # Create T3 App
 
 This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
