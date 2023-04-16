@@ -28,11 +28,17 @@ export default function SingleSearchbox({ includePriceChart }: Props) {
       if (value.length > 2 && value.length % 2 != 0) {
         fetch(autocompleteEndpoint + value)
           .then((response) => response.json())
-          .then((data) => {
-            setAutocompleteResults(data.data);
-            setShowAutocomplete(true);
-            setSelectedAutocompleteIndex(-1);
-          })
+          .then(
+            (data: {
+              object: string;
+              total_values: number;
+              data: string[];
+            }) => {
+              setAutocompleteResults(data.data);
+              setShowAutocomplete(true);
+              setSelectedAutocompleteIndex(-1);
+            }
+          )
           .catch((error) => {
             console.error("Error fetching autocomplete results: ", error);
           });
@@ -52,7 +58,7 @@ export default function SingleSearchbox({ includePriceChart }: Props) {
   };
 
   const handleAutocompleteKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>) => {
+    async (event: React.KeyboardEvent<HTMLDivElement>) => {
       const key = event.key;
       const totalResults = autocompleteResults.length;
       switch (key) {
@@ -77,8 +83,8 @@ export default function SingleSearchbox({ includePriceChart }: Props) {
           ) {
             const item = autocompleteResults[selectedAutocompleteIndex];
             item && handleAutocompleteItemClick(item);
-            item && fetchSingleSearchResults(item);
-            item && includePriceChart && fetchPriceChart(item);
+            item && (await fetchSingleSearchResults(item));
+            item && includePriceChart && (await fetchPriceChart(item));
           }
           break;
 
@@ -89,8 +95,8 @@ export default function SingleSearchbox({ includePriceChart }: Props) {
           ) {
             const item = autocompleteResults[selectedAutocompleteIndex];
             item && handleAutocompleteItemClick(item);
-            item && fetchSingleSearchResults(item);
-            item && includePriceChart && fetchPriceChart(item);
+            item && (await fetchSingleSearchResults(item));
+            item && includePriceChart && (await fetchPriceChart(item));
           }
           break;
 
@@ -117,13 +123,13 @@ export default function SingleSearchbox({ includePriceChart }: Props) {
     }
   }, []);
 
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowAutocomplete(false);
     if (singleSearchInput.trim().length > 0) {
-      fetchSingleSearchResults(singleSearchInput);
+      await fetchSingleSearchResults(singleSearchInput);
       if (includePriceChart) {
-        fetchPriceChart(singleSearchInput);
+        await fetchPriceChart(singleSearchInput);
       }
     }
   };

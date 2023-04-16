@@ -105,7 +105,7 @@ export default function Navbar() {
                       href={page.href}
                       className={`
  rounded-md px-3 py-2 text-sm font-medium hover:bg-zinc-600 
-${page.current && "bg-zinc-800 text-white hover:bg-zinc-600"} 
+${page.current ? "bg-zinc-800 text-white hover:bg-zinc-600" : ""} 
 `}
                     >
                       {page.name}
@@ -148,7 +148,7 @@ ${page.current && "bg-zinc-800 text-white hover:bg-zinc-600"}
                   key={page.name}
                   className={`
                     block rounded-md px-3 py-2 text-sm font-medium
-                    ${page.current && "bg-zinc-600 text-white"} 
+                    ${page.current ? "bg-zinc-600 text-white" : ""} 
                     `}
                 >
                   {page.name}

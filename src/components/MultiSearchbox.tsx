@@ -113,9 +113,9 @@ Counterspell`}
           "
         type="button"
         // onClick={() => store.handleSubmit()}
-        onClick={() => {
+        onClick={async () => {
           const result = parseMultiSearchInput(multiSearchInput);
-          fetchMultiSearchResults(result);
+          await fetchMultiSearchResults(result);
         }}
       >
         Search

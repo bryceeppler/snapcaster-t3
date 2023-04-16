@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useStore } from "~/store";
+import { env } from "~/env.mjs";
 
 export default function SealedSearchBox() {
   const { sealedSearchInput, setSealedSearchInput, fetchSealedSearchResults } =
@@ -24,10 +25,10 @@ export default function SealedSearchBox() {
         // remove any slashes and periods
 
         fetch(
-          `${process.env.NEXT_PUBLIC_SNAPCASTER_API_URL}/utils/autocomplete/${value}/`
+          `${env.NEXT_PUBLIC_SNAPCASTER_API_URL}/utils/autocomplete/${value}/`
         )
           .then((response) => response.json())
-          .then((data) => {
+          .then((data: string[]): void => {
             setAutocompleteResults(data);
             setShowAutocomplete(true);
             setSelectedAutocompleteIndex(-1);
@@ -51,7 +52,7 @@ export default function SealedSearchBox() {
   };
 
   const handleAutocompleteKeyDown = useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>) => {
+    async (event: React.KeyboardEvent<HTMLDivElement>) => {
       const key = event.key;
       const totalResults = autocompleteResults?.length;
       switch (key) {
@@ -76,7 +77,7 @@ export default function SealedSearchBox() {
           ) {
             const item = autocompleteResults[selectedAutocompleteIndex];
             item && handleAutocompleteItemClick(item);
-            item && fetchSealedSearchResults(item);
+            item && (await fetchSealedSearchResults(item));
           }
           break;
 
@@ -87,7 +88,7 @@ export default function SealedSearchBox() {
           ) {
             const item = autocompleteResults[selectedAutocompleteIndex];
             item && handleAutocompleteItemClick(item);
-            item && fetchSealedSearchResults(item);
+            item && (await fetchSealedSearchResults(item));
           }
           break;
 
@@ -114,11 +115,11 @@ export default function SealedSearchBox() {
     }
   }, []);
 
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowAutocomplete(false);
     if (sealedSearchInput.trim().length > 0) {
-      fetchSealedSearchResults(sealedSearchInput);
+      await fetchSealedSearchResults(sealedSearchInput);
     }
   };
 
