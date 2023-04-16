@@ -1,9 +1,7 @@
 import React from "react";
 import { useStore } from "~/store";
 
-type Props = {};
-
-export default function SingleSearchinfo({}: Props) {
+export default function SingleSearchinfo() {
   const {
     singleSearchResults,
     filteredSingleSearchResults,

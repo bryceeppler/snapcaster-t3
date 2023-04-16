@@ -1,9 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useStore } from "~/store";
 
-type Props = {};
-
-export default function SealedSearchBox({}: Props) {
+export default function SealedSearchBox() {
   const { sealedSearchInput, setSealedSearchInput, fetchSealedSearchResults } =
     useStore();
   const [autocompleteResults, setAutocompleteResults] = useState<string[]>([]);

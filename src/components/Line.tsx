@@ -1,4 +1,3 @@
-import React, { PureComponent } from "react";
 import {
   LineChart,
   Line as ReLine,
@@ -10,7 +9,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useStore } from "~/store";
-import Loadingspinner from "./Loadingspinner";
 
 // const data = [
 //   {
@@ -45,12 +43,10 @@ import Loadingspinner from "./Loadingspinner";
 //   },
 // ];
 
-type Props = {};
-
-export default function Line({}: Props) {
+export default function Line() {
   const { singleSearchPriceList: data } = useStore();
 
-  if (data === undefined || (data as any).length === 0) {
+  if (data === undefined || data.length === 0) {
     return (
       <div className="flex items-center justify-center pt-5">
         You just created the first price entry for this card. Search the card
@@ -67,7 +63,7 @@ export default function Line({}: Props) {
         height={300}
         // data={data}
         // let data be type any before passing it to LineChart
-        data={data as any}
+        data={data}
         margin={{
           top: 5,
           right: 12,

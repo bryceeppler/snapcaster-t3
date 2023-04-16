@@ -1,8 +1,6 @@
 import React from "react";
 import { useStore } from "~/store";
 
-type Props = {};
-
 const parseMultiSearchInput = (input: string) => {
   const lines = input.split(/\n/);
 
@@ -11,19 +9,23 @@ const parseMultiSearchInput = (input: string) => {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     // if the line is empty, skip it
-    if (line === "") continue;
-
-    // remove any numbers from the start of the line
-    const lineWithoutCount = line.replace(/^\d+/, "");
-    // remove any whitespace from the start of the line
-    const lineWithoutCountAndWhitespace = lineWithoutCount.replace(/^\s+/, "");
-    // remove any whitespace from the end of the line
-    const lineWithoutCountAndWhitespaceAndTrailingWhitespace =
-      lineWithoutCountAndWhitespace.replace(/\s+$/, "");
-    // add the line to the return string
-    // if the length > 0, add to the return string
-    if (lineWithoutCountAndWhitespaceAndTrailingWhitespace.length > 0) {
-      returnString += lineWithoutCountAndWhitespaceAndTrailingWhitespace + "\n";
+    if (line !== "" && line !== undefined) {
+      // remove any numbers from the start of the line
+      const lineWithoutCount = line.replace(/^\d+/, "");
+      // remove any whitespace from the start of the line
+      const lineWithoutCountAndWhitespace = lineWithoutCount.replace(
+        /^\s+/,
+        ""
+      );
+      // remove any whitespace from the end of the line
+      const lineWithoutCountAndWhitespaceAndTrailingWhitespace =
+        lineWithoutCountAndWhitespace.replace(/\s+$/, "");
+      // add the line to the return string
+      // if the length > 0, add to the return string
+      if (lineWithoutCountAndWhitespaceAndTrailingWhitespace.length > 0) {
+        returnString +=
+          lineWithoutCountAndWhitespaceAndTrailingWhitespace + "\n";
+      }
     }
   }
 
@@ -48,7 +50,7 @@ const parseMultiSearchInput = (input: string) => {
   // console.log(result.join('\n')
 };
 
-export default function MultiSearchbox({}: Props) {
+export default function MultiSearchbox() {
   const {
     multiSearchQuery,
     multiSearchInput,

@@ -1,9 +1,7 @@
 import React from "react";
 import { useStore } from "~/store";
 
-type Props = {};
-
-export default function SealedSearchFilters({}: Props) {
+export default function SealedSearchFilters() {
   const {
     setSealedSearchOrder: setSortOrder,
     setSealedSearchOrderBy: setSortBy,

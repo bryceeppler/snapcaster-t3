@@ -1,8 +1,7 @@
 import React from "react";
 import { useStore } from "~/store";
-type Props = {};
 
-export default function MultiSearchResultsInfo({}: Props) {
+export default function MultiSearchResultsInfo() {
   const {
     filteredMultiSearchResults: results,
     selectAllMultiSearchResults,

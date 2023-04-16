@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 
-type Props = {};
+type Props = object;
 
 export default function Layout({ children }: React.PropsWithChildren<Props>) {
   return (

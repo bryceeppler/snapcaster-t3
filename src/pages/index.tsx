@@ -14,8 +14,6 @@ import axios from "axios";
 import { type CardInfo } from "~/components/PopularCards";
 import { useEffect, useState } from "react";
 
-type Props = {};
-
 const Home: NextPage<Props> = () => {
   const {
     singleSearchResults,
@@ -32,7 +30,7 @@ const Home: NextPage<Props> = () => {
     const res = axios
       .get(
         `${
-          process.env.SNAPCASTER_API_URL || "http://localhost:8000"
+          process.env.NEXT_PUBLIC_SNAPCASTER_API_URL || "http://localhost:3000"
         }/utils/popular_cards/`
       )
       .then((res) => res.data)

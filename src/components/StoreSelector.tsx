@@ -1,9 +1,7 @@
 import React from "react";
 import { useStore } from "~/store";
 
-type Props = {};
-
-export default function StoreSelector({}: Props) {
+export default function StoreSelector() {
   const {
     websites,
     multiSearchSelectedWebsites,

@@ -3,9 +3,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
 
-type Props = {};
-
-export default function Navbar({}: Props) {
+export default function Navbar() {
   const currentPath = useRouter().pathname;
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import LoadingDots from './ui/LoadingDots';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import LoadingDots from "./ui/LoadingDots";
 
 type Props = {
   popularCards: CardInfo[];
@@ -35,11 +35,11 @@ export default function PopularCards({ popularCards }: Props) {
   const visibleCards = [
     popularCards[getCardIndex(-1)],
     popularCards[getCardIndex(0)],
-    popularCards[getCardIndex(1)]
+    popularCards[getCardIndex(1)],
   ];
 
   return (
-    <div className="mx-auto mt-6 w-full max-w-3xl rounded-md p-4 border border-1 border-zinc-600 backdrop-blur-md backdrop-brightness-75 ">
+    <div className="border-1 mx-auto mt-6 w-full max-w-3xl rounded-md border border-zinc-600 p-4 backdrop-blur-md backdrop-brightness-75 ">
       <h2 className="mb-4 text-center text-2xl font-bold">Popular Cards</h2>
       {popularCards.length > 0 ? (
         <div className="flex items-center justify-center">
@@ -49,31 +49,35 @@ export default function PopularCards({ popularCards }: Props) {
           >
             &lt;
           </button>
-          {visibleCards.map((card, index) => (
-            <div
-              key={index}
-              className={`mx-2 flex flex-col items-center sm:w-1/3 ${
-                //  if small or below, hide all but index 0
-                index === 0 ? 'block' : 'hidden sm:block'
-              }`}
-            >
-              <div className="flex h-48 w-full items-center">
-                <img
-                  className="mx-auto max-h-full max-w-full object-contain"
-                  src={card.image_url}
-                  alt={card.name}
-                />
-              </div>
-              <p className="mt-2 w-36 truncate text-center text-sm">
-                {card.name}
-              </p>
-              <p className="text-center font-mono text-sm text-pink-300">
-                {card.price
-                  ? `$${card.price.toFixed(2)}`
-                  : 'Price not available'}
-              </p>
-            </div>
-          ))}
+          {visibleCards.map((card, index) => {
+            return (
+              card && (
+                <div
+                  key={index}
+                  className={`mx-2 flex flex-col items-center sm:w-1/3 ${
+                    //  if small or below, hide all but index 0
+                    index === 0 ? "block" : "hidden sm:block"
+                  }`}
+                >
+                  <div className="flex h-48 w-full items-center">
+                    <img
+                      className="mx-auto max-h-full max-w-full object-contain"
+                      src={card.image_url}
+                      alt={card.name}
+                    />
+                  </div>
+                  <p className="mt-2 w-36 truncate text-center text-sm">
+                    {card.name}
+                  </p>
+                  <p className="text-center font-mono text-sm text-pink-300">
+                    {card.price
+                      ? `$${card.price.toFixed(2)}`
+                      : "Price not available"}
+                  </p>
+                </div>
+              )
+            );
+          })}
           <button
             className="rounded-l bg-white bg-opacity-75 p-2"
             onClick={nextCard}

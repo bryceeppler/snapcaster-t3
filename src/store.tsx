@@ -292,7 +292,7 @@ type State = {
   filterSealedSearchResults: () => void;
   setSealedSearchOrderBy: (sealedSearchOrderBy: "price" | "website") => void;
   setSealedSearchOrder: (sealedSearchOrder: "asc" | "desc") => void;
-  singleSearchPriceList?: CardPrices;
+  singleSearchPriceList?: CardPrices[];
   sealedSearchHasResults: boolean;
 };
 
@@ -305,7 +305,7 @@ export const useStore = create<State>((set, get) => ({
     set({ priceChartLoading: true });
     // encode cardName as utf-8
     const response = await axios.post(
-      `${env.NEXT_PUBLIC_SNAPCASTER_API_URL}/prices/`,
+      `${process.env.NEXT_PUBLIC_SNAPCASTER_API_URL}/prices/`,
       {
         cardName: cardName,
       }
@@ -431,7 +431,7 @@ export const useStore = create<State>((set, get) => ({
   fetchSealedSearchResults: async (searchInput: string) => {
     set({ sealedSearchResultsLoading: true });
     const response = await axios.post(
-      `${env.NEXT_PUBLIC_SNAPCASTER_API_URL}/search/sealed/`,
+      `${process.env.NEXT_PUBLIC_SNAPCASTER_API_URL}/search/sealed/`,
       {
         setName: searchInput,
         websites: ["all"],
@@ -588,7 +588,7 @@ export const useStore = create<State>((set, get) => ({
     const filteredCardNames = cardNames.filter((cardName) => cardName !== "");
     // match each website to it's code
     const response = await axios.post(
-      `${env.NEXT_PUBLIC_SNAPCASTER_API_URL}/search/bulk/`,
+      `${process.env.NEXT_PUBLIC_SNAPCASTER_API_URL}/search/bulk/`,
       {
         cardNames: filteredCardNames,
         websites: websiteCodes,
@@ -642,7 +642,7 @@ export const useStore = create<State>((set, get) => ({
     set({ singleSearchStarted: true });
     set({ singleSearchResultsLoading: true });
     const response = await axios.post(
-      `${env.NEXT_PUBLIC_SNAPCASTER_API_URL}/search/single/`,
+      `${process.env.NEXT_PUBLIC_SNAPCASTER_API_URL}/search/single/`,
       {
         cardName: searchInput,
         websites: ["all"],

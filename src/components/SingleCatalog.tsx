@@ -1,9 +1,8 @@
 import React from "react";
 import { useStore } from "~/store";
 import SingleCatalogRow from "./SingleCatalogRow";
-type Props = {};
 
-export default function SingleCatalog({}: Props) {
+export default function SingleCatalog() {
   const { filteredSingleSearchResults } = useStore();
   if (filteredSingleSearchResults.length === 0) {
     return (
